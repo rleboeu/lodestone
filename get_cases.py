@@ -1,4 +1,5 @@
 import requests
+import sys
 import json
 
 fields = [
@@ -65,4 +66,11 @@ params = {
 # The parameters are passed to 'json' rather than 'params' in this case
 response = requests.post(files_endpt, headers = {"Content-Type": "application/json"}, json = params)
 
-print(response.content.decode("utf-8"))
+original_stdout = sys.stdout
+
+with open('test3.tsv', 'w') as f:
+	sys.stdout = f
+	print(response.content.decode("utf-8"))
+	sys.stdout = original_stdout
+
+

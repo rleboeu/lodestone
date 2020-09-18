@@ -226,9 +226,30 @@ input("Press Enter to start download...")
 
 current_file = 1
 tempcount = 0
-for x in stripped_line_arr:
-    os.system('mkdir -p {}'.format(x[0]))
-    print("File #{} of {}".format(current_file, len(stripped_line_arr)))
-    os.system('./gdc-client download {} --dir ./{}'.format(x[2], x[0]))
-    os.system('echo {} >> ./{}/filenames.txt'.format(x[1], x[0]))
-    current_file += 1
+
+'''
+darwin = OSX
+win32 = windows
+linux = linux
+'''
+
+if sys.platform == 'linux' or sys.platform == 'darwin':
+    os.system('rm xt44.tsv temp3.tsv')
+
+    for x in stripped_line_arr:
+        if tempcount < 5:
+            os.system('mkdir -p {}'.format(x[0]))
+            print("File #{} of {}".format(current_file, len(stripped_line_arr)))
+            os.system('./bin/gdc-client-{} download {} --dir ./{}'.format(sys.platform, x[2], x[0]))
+            os.system('mv ./{}/{}/{} ./{}/{}'.format(x[0], x[2], x[1], x[0], x[1]))
+            os.system('rm -rf ./{}/{}'.format(x[0], x[2]))
+            current_file += 1
+            tempcount += 1
+'''
+elif sys.platform == 'win32':
+    for x in stripped_line_arr:
+        os.system('mkdir -p {}'.format(x[0]))
+        print("File #{} of {}".format(current_file, len(stripped_line_arr)))
+        os.system('./bin/gdc-client-win32 download {} --dir ./{}'.format(x[2], x[0]))
+        current_file += 1
+'''

@@ -4,8 +4,8 @@ import json
 import re
 import os
 
-print("Hi! I'm Lodestone.")
-student_name = input("What's your name?\n> ")
+print("\n+++ PROJECT: LODESTONE +++\n")
+student_name = input("ENTER NAME: ")
 
 fields = [
     "diagnoses.ajcc_pathologic_stage",
@@ -13,7 +13,6 @@ fields = [
     "project.project_id",
     "demographic.gender",
     "demographic.race",
-    "case_id",
     "submitter_id"
     ]
 
@@ -89,7 +88,7 @@ count = 0
 lines = []
 sheet = ""
 with open('test3.tsv') as fp:
-    with open('FINAL.tsv', 'w') as fout:
+    with open('CASE_SET.tsv', 'w') as fout:
         sys.stdout = fout
         while True:
             count += 1
@@ -101,13 +100,13 @@ with open('test3.tsv') as fp:
             lines = line.strip().split("\t")
 
             if count == 1:
-                print("Student\tCase ID\tGender\tRace\tAJCC Pathologic Stage\tNo. of Images")
+                print("Creator\tCase ID\tGender\tRace\tAJCC Pathologic Stage\tNo. of Images")
             elif len(line) != 1:
                 num_samples = 0
-                for i in range(6, 11):
+                for i in range(5, 10):
                     if lines[i] != '':
                         num_samples += 1
-                print("{}\t{}\t{}\t{}\t{}\t{}".format(student_name, lines[11], lines[1], lines[2], lines[3], num_samples))
+                print("{}\t{}\t{}\t{}\t{}\t{}".format(student_name, lines[10], lines[0], lines[1], lines[2], num_samples))
         sys.stdout = original_stdout
 
 # ----- get cases ends here
@@ -133,7 +132,7 @@ with open("test3.tsv") as fp:
 		if not line:
 			break
 	
-		lines = line.strip().split("	")
+		lines = line.strip().split("\t")
 
 		for x in lines:
 			if x != "TCGA-BRCA" and re.search("TCGA-*", x) and x:
@@ -228,21 +227,22 @@ current_file = 1
 tempcount = 0
 
 '''
-darwin = OSX
+darwin = osx
 win32 = windows
 linux = linux
 '''
 
+os.system('rm xt44.tsv test3.tsv')
+
 if sys.platform == 'linux' or sys.platform == 'darwin':
-    os.system('rm xt44.tsv temp3.tsv')
 
     for x in stripped_line_arr:
         if tempcount < 5:
-            os.system('mkdir -p {}'.format(x[0]))
+            os.system('mkdir -p ./DOWNLOADS/{}'.format(x[0]))
             print("File #{} of {}".format(current_file, len(stripped_line_arr)))
-            os.system('./bin/gdc-client-{} download {} --dir ./{}'.format(sys.platform, x[2], x[0]))
-            os.system('mv ./{}/{}/{} ./{}/{}'.format(x[0], x[2], x[1], x[0], x[1]))
-            os.system('rm -rf ./{}/{}'.format(x[0], x[2]))
+            os.system('./bin/gdc-client-{} download {} --dir ./DOWNLOADS/{}'.format(sys.platform, x[2], x[0]))
+            os.system('mv ./DOWNLOADS/{}/{}/{} ./DOWNLOADS/{}/{}'.format(x[0], x[2], x[1], x[0], x[1]))
+            os.system('rm -rf ./DOWNLOADS/{}/{}'.format(x[0], x[2]))
             current_file += 1
             tempcount += 1
 '''

@@ -34,5 +34,6 @@ For Windows, it would be simpler to `right click Start -> Apps and Features -> P
            <td>Pop!_OS 20.04 LTS<br />Arch Linux kern. 5.8.5</td>
          </tr>
 </table>
+
 ## Installation Instructions
 ## License

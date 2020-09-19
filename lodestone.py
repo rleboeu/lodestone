@@ -291,7 +291,7 @@ elif sys.platform == 'win32':
         if tempcount < 5:
             os.system('mkdir -p .\\DOWNLOADS\\{}'.format(x[0]))
             print("File {} of {}".format(current_file, len(stripped_line_arr)))
-            os.system('.\\bin\\gdc-client-{} download {} --dir .\\DOWNLOADS\\{}'.format(sys.platform, x[2], x[0]))
+            os.system('.\\bin\\gdc-client-{}.exe download {} --dir .\\DOWNLOADS\\{}'.format(sys.platform, x[2], x[0]))
             os.system('mv .\\DOWNLOADS\\{}\\{}\\{} .\\DOWNLOADS\\{}\\{}'.format(x[0], x[2], x[1], x[0], x[1]))
             os.system('rm -rf .\\DOWNLOADS\\{}\\{}'.format(x[0], x[2]))
             current_file += 1

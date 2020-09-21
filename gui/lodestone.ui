@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>900</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Lodestone</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btnGenerateSheet">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>440</y>
+      <width>191</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Search...</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbDemoRace">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>230</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>white</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>black</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="lblTitle">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>341</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Welcome to Lodestone (Alpha)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDemographic">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>200</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Demographics</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDemoRace">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>230</y>
+      <width>65</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Race:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbDemoGender">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>260</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>both</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>female</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>male</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="lblDemoGender">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>260</y>
+      <width>65</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Gender:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblProject">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Project</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblProjectName">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>130</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Name:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbProjectName">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>130</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>TCGA</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="lblDiagnoses">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>300</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Diagnoses</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDiagnosesPathStage">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>330</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>AJCC Pathologic Stage:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbDiagnosesPathStage">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>330</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>stage i</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>stage ia</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>stage iia</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>stage iib</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>stage iiia</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="btnDownloadFiles">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>490</y>
+      <width>191</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Download SVS Files</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkDownloadSort">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>490</y>
+      <width>191</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sort Images by Case ID</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblProjectPrimarySite">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>160</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Primary Site:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cmbProjectPrimarySite">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>160</y>
+      <width>131</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>breast</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>brain</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>bronchus and lung</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>kidney</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>ovary</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableView" name="tableViewMain">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>-10</y>
+      <width>431</width>
+      <height>561</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>19</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>cmbProjectName</tabstop>
+  <tabstop>cmbDemoRace</tabstop>
+  <tabstop>cmbDemoGender</tabstop>
+  <tabstop>cmbDiagnosesPathStage</tabstop>
+  <tabstop>btnGenerateSheet</tabstop>
+  <tabstop>chkDownloadSort</tabstop>
+  <tabstop>btnDownloadFiles</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

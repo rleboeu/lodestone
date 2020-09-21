@@ -15,21 +15,23 @@ import sys
 import json
 import re
 import os
+import csv
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
-        self.prelimSpreadsheet = []
-
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(900, 600)
-        MainWindow.setMinimumSize(QtCore.QSize(900, 600))
-        MainWindow.setMaximumSize(QtCore.QSize(900, 600))
+        MainWindow.resize(1280, 600)
+        MainWindow.setMinimumSize(QtCore.QSize(1280, 600))
+        MainWindow.setMaximumSize(QtCore.QSize(1280, 600))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.btnGenerateSheet = QtWidgets.QPushButton(self.centralwidget)
         self.btnGenerateSheet.setGeometry(QtCore.QRect(20, 440, 191, 41))
         self.btnGenerateSheet.clicked.connect(lambda: self.generateSpreadsheets())
+
+        self.lblProgress = QtWidgets.QLabel(self.centralwidget)
+        self.lblProgress.setGeometry(QtCore.QRect(220, 440, 131, 41))
 
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -144,9 +146,15 @@ class Ui_MainWindow(object):
         self.cmbProjectPrimarySite.addItem("")
         self.cmbProjectPrimarySite.addItem("")
         self.cmbProjectPrimarySite.addItem("")
+
+        self.model = QtGui.QStandardItemModel()
+
         self.tableViewMain = QtWidgets.QTableView(self.centralwidget)
-        self.tableViewMain.setGeometry(QtCore.QRect(450, 20, 431, 531))
+        self.tableViewMain.setGeometry(QtCore.QRect(450, 20, 800, 531))
         self.tableViewMain.setObjectName("tableViewMain")
+        self.tableViewMain.setModel(self.model)
+        self.tableViewMain.horizontalHeader().setStretchLastSection(True)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 19))
@@ -198,6 +206,9 @@ class Ui_MainWindow(object):
         self.cmbProjectPrimarySite.setItemText(4, _translate("MainWindow", "ovary"))
 
     def generateSpreadsheets(self):
+        self.btnGenerateSheet.setEnabled(False)
+        self.model.removeRows(0, self.model.rowCount())
+
         fields = [
             "diagnoses.ajcc_pathologic_stage",
             "samples.sample_type",
@@ -282,6 +293,11 @@ class Ui_MainWindow(object):
         gender = 0
         race = 1
         stage = 2
+        upbound = case_id
+
+        if ajcc_path_stage[0] == 'stage i' or ajcc_path_stage[0] == 'stage iiia':
+            case_id = 9
+            upbound = case_id
 
         count = 0
         lines = []
@@ -303,11 +319,36 @@ class Ui_MainWindow(object):
                         print("Case ID\tGender\tRace\tAJCC Pathologic Stage\tNo. of Images")
                     elif len(line) != 1:
                         num_samples = 0
-                        for i in range(5, 10):
+                        for i in range(5, upbound):
                             if lines[i] != '':
                                 num_samples += 1
                         print("{}\t{}\t{}\t{}\t{}".format(lines[case_id], lines[gender], lines[race], lines[stage], num_samples))
                 sys.stdout = original_stdout
+        self.btnGenerateSheet.setEnabled(True)
+        self.btnDownloadFiles.setEnabled(True)
+
+
+        count = 0
+        with open('CASE_SET.tsv') as tsvfile:
+            reader = csv.DictReader(tsvfile, dialect='excel-tab')
+            for row in reader:
+                print(row)
+                items = []
+                for key in row.keys():
+                    items.append(QtGui.QStandardItem(row[key]))
+                '''items = [
+                    QtGui.QStandardItem(field)
+                    for field in row
+                ]'''
+                if count == 0:
+                    headers = []
+                    for i in row.keys():
+                        headers.append(QtGui.QStandardItem(i))
+                    self.model.appendRow(headers)
+
+                self.model.appendRow(items)
+                count += 1
+
 
 
 

@@ -1,4 +1,6 @@
 # Lodestone
+Note: This GitHub page is currently a work-in-progress and contains missing sections.<br />
+The code organization is messy and will be fixed in the near future.
 ## About Lodestone
 &nbsp;&nbsp;Lodestone was designed with the goal to be an alternative for downloading large amounts of files from the National Cancer Institute's Genomic Data Commons Data Portal (GDC Portal), making it more efficient for researchers to download items en masse without having to use the GDC Portal's repository (e.g. SVS files: see <a href="https://www.leicabiosystems.com/digital-pathology/manage/aperio-imagescope/">Aperio ImageScope</a>). Through Lodestone, you will be able to directly modify your search criteria (AJCC Pathologic Stage, Gender, Race, File Extension), create corresponding .TSVs, and download any related files that you would want. In order to accomplish this, Lodestone utilizes the <a href="https://gdc.cancer.gov/access-data/gdc-data-transfer-tool">GDC Data Transfer Tool</a> along with Python source code. The GDC Data Transfer Tool allows for efficient download speeds, whereas Python allows for a streamlined and easy-to-modify codebase.<br /><br />
 &nbsp;&nbsp;Lodestone is developed on Linux (Pop!\_OS and Arch), therefore Linux support will always be available. <b>Official Windows support coming soon!</b>

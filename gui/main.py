@@ -292,21 +292,21 @@ class Ui_MainWindow(object):
                 while True:
                     count += 1
 
-                line = fp.readline()
+                    line = fp.readline()
 
-                if not line:
-                    break
+                    if not line:
+                        break
 
-                lines = line.strip().split("\t")
+                    lines = line.strip().split("\t")
 
-                if count == 1:
-                    print("Case ID\tGender\tRace\tAJCC Pathologic Stage\tNo. of Images")
-                elif len(line) != 1:
-                    num_samples = 0
-                    for i in range(5, 10):
-                        if lines[i] != '':
-                            num_samples += 1
-                    print("{}\t{}\t{}\t{}\t{}\t{}".format(student_name, lines[10], lines[0], lines[1], lines[2], num_samples))
+                    if count == 1:
+                        print("Case ID\tGender\tRace\tAJCC Pathologic Stage\tNo. of Images")
+                    elif len(line) != 1:
+                        num_samples = 0
+                        for i in range(5, 10):
+                            if lines[i] != '':
+                                num_samples += 1
+                        print("{}\t{}\t{}\t{}\t{}".format(lines[case_id], lines[gender], lines[race], lines[stage], num_samples))
                 sys.stdout = original_stdout
 
 

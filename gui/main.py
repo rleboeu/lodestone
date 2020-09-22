@@ -178,7 +178,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Lodestone"))
         self.btnGenerateSheet.setText(_translate("MainWindow", "Search..."))
         self.cmbDemoRace.setItemText(0, _translate("MainWindow", "white"))
-        self.cmbDemoRace.setItemText(1, _translate("MainWindow", "black"))
+        self.cmbDemoRace.setItemText(1, _translate("MainWindow", "black or african american"))
         self.lblTitle.setText(_translate("MainWindow", "Welcome to Lodestone (Alpha)"))
         self.lblDemographic.setText(_translate("MainWindow", "Demographics"))
         self.lblDemoRace.setText(_translate("MainWindow", "Race:"))
@@ -187,7 +187,8 @@ class Ui_MainWindow(object):
         self.cmbDemoGender.setItemText(2, _translate("MainWindow", "male"))
         self.lblDemoGender.setText(_translate("MainWindow", "Gender:"))
         self.lblProject.setText(_translate("MainWindow", "Project"))
-        self.lblProjectName.setText(_translate("MainWindow", "Name:"))
+        self.lblProjectName.setText(_translate("MainWindow", "Program:"))
+        self.lblProjectName.adjustSize()
         self.cmbProjectName.setItemText(0, _translate("MainWindow", "TCGA"))
         self.lblDiagnoses.setText(_translate("MainWindow", "Diagnoses"))
         self.lblDiagnosesPathStage.setText(_translate("MainWindow", "AJCC Pathologic Stage:"))
@@ -288,23 +289,22 @@ class Ui_MainWindow(object):
             print(response.content.decode("utf-8"))
             sys.stdout = original_stdout
 
-        # determine columns
-        case_id = 10
-        gender = 0
-        race = 1
-        stage = 2
-        upbound = case_id
-
-        if ajcc_path_stage[0] == 'stage i' or ajcc_path_stage[0] == 'stage iiia':
-            case_id = 9
-            upbound = case_id
-
-        count = 0
-        lines = []
-
         with open('searchResults.tsv') as fp:
             with open('CASE_SET.tsv', 'w') as fout:
                 sys.stdout = fout
+
+                case_id = 0
+                gender = 0
+                race = 0
+                stage = 0
+                num_samples = 0
+
+                lowbound = 0
+                upbound = 0
+
+                count = 0
+                lines = []
+
                 while True:
                     count += 1
 
@@ -316,30 +316,46 @@ class Ui_MainWindow(object):
                     lines = line.strip().split("\t")
 
                     if count == 1:
+                        upbound = len(lines)
+
+                        for i in range(len(lines)):
+                            if 'sample' in lines[i]:
+                                lowbound = i
+                                break
+
+                        upbound = lowbound
+                        for i in range(len(lines)):
+                            if 'sample' in lines[i]:
+                                upbound += 1
+                            if 'gender' in lines[i]:
+                                gender = i
+                            if 'race' in lines[i]:
+                                race = i
+                            if 'submitter_id' in lines[i]:
+                                case_id = i
+                            if 'pathologic_stage' in lines[i]:
+                                stage = i
+
                         print("Case ID\tGender\tRace\tAJCC Pathologic Stage\tNo. of Images")
                     elif len(line) != 1:
                         num_samples = 0
-                        for i in range(5, upbound):
-                            if lines[i] != '':
+                        for z in range(lowbound, upbound):
+                            if lines[z] != '':
                                 num_samples += 1
                         print("{}\t{}\t{}\t{}\t{}".format(lines[case_id], lines[gender], lines[race], lines[stage], num_samples))
+
                 sys.stdout = original_stdout
         self.btnGenerateSheet.setEnabled(True)
         self.btnDownloadFiles.setEnabled(True)
 
-
+        # update the model and therefore QTableView
         count = 0
         with open('CASE_SET.tsv') as tsvfile:
             reader = csv.DictReader(tsvfile, dialect='excel-tab')
             for row in reader:
-                print(row)
                 items = []
                 for key in row.keys():
                     items.append(QtGui.QStandardItem(row[key]))
-                '''items = [
-                    QtGui.QStandardItem(field)
-                    for field in row
-                ]'''
                 if count == 0:
                     headers = []
                     for i in row.keys():

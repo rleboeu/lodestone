@@ -20,6 +20,8 @@ import csv
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
+        self.filters = {}
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 600)
         MainWindow.setMinimumSize(QtCore.QSize(1280, 600))
@@ -120,6 +122,8 @@ class Ui_MainWindow(object):
         self.btnDownloadFiles = QtWidgets.QPushButton(self.centralwidget)
         self.btnDownloadFiles.setEnabled(False)
         self.btnDownloadFiles.setGeometry(QtCore.QRect(20, 490, 191, 41))
+        self.btnDownloadFiles.clicked.connect(lambda: self.downloadSVS())
+
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnDownloadFiles.setFont(font)
@@ -206,6 +210,46 @@ class Ui_MainWindow(object):
         self.cmbProjectPrimarySite.setItemText(3, _translate("MainWindow", "kidney"))
         self.cmbProjectPrimarySite.setItemText(4, _translate("MainWindow", "ovary"))
 
+    def generatePOSTrequest(self, endpt, fields):
+        fields = ",".join(fields)
+
+        files_endpt = "https://api.gdc.cancer.gov/{}".format(endpt)
+
+        search_parameters = { 'cases.primary_site': [ self.cmbProjectPrimarySite.currentText() ] }
+        search_parameters['cases.demographic.race'] = [ self.cmbDemoRace.currentText() ]
+
+        if self.cmbDemoGender.currentText() == 'both':
+            search_parameters['cases.demographic.gender'] = [ 'male', 'female' ]
+        else:
+            search_parameters['cases.demographic.gender'] = [ self.cmbDemoGender.currentText() ]
+
+        search_parameters['cases.diagnoses.ajcc_pathologic_stage'] = [ self.cmbDiagnosesPathStage.currentText() ]
+        search_parameters['cases.project.program.name'] = [ self.cmbProjectName.currentText() ]
+
+        if endpt == 'files':
+            search_parameters['files.data_format'] = ['svs']    # to be changed to allow BAM, etc
+            search_parameters['files.access'] = ['open']
+
+        filters = {"op": "and", "content": []}
+
+        for key, value in search_parameters.items():
+            filters["content"].append({
+                "op": "in",
+                "content": {
+                "field": key,
+                "value": value
+                }
+            })
+
+        params = {
+            "filters": filters,
+            "fields": fields,
+            "format": "TSV",
+            "size": "2000"
+            }
+
+        return requests.post(files_endpt, headers = {"Content-Type": "application/json"}, json = params)
+
     def generateSpreadsheets(self):
         self.btnGenerateSheet.setEnabled(False)
         self.model.removeRows(0, self.model.rowCount())
@@ -218,69 +262,8 @@ class Ui_MainWindow(object):
             "demographic.race",
             "submitter_id"
             ]
-        fields = ",".join(fields)
 
-        files_endpt = "https://api.gdc.cancer.gov/cases"
-
-        primary_site = [ self.cmbProjectPrimarySite.currentText() ]
-        demographic_race = [ self.cmbDemoRace.currentText() ]
-
-        demographic_gender = [ self.cmbDemoGender.currentText() ]
-        if demographic_gender[0] == 'both':
-            demographic_gender = ["male", "female"]
-
-        ajcc_path_stage = [ self.cmbDiagnosesPathStage.currentText() ]
-        program_name = [ self.cmbProjectName.currentText() ]
-
-        filters = {
-            "op": "and",
-            "content":[
-                {
-                "op": "in",
-                "content":{
-                    "field": "primary_site",
-                    "value": primary_site
-                    }
-                },
-                {
-                "op": "in",
-                "content":{
-                    "field": "demographic.race",
-                    "value": demographic_race
-                    }
-                },
-                {
-                    "op": "in",
-                    "content": {
-                        "field": "diagnoses.ajcc_pathologic_stage",
-                        "value": ajcc_path_stage
-                    }
-                },
-                {
-                    "op": "in",
-                    "content": {
-                        "field": "project.program.name",
-                        "value": program_name
-                    }
-                },
-                {
-                    "op": "in",
-                    "content": {
-                        "field": "demographic.gender",
-                        "value": demographic_gender
-                    }
-                }
-            ]
-        }
-
-        params = {
-            "filters": filters,
-            "fields": fields,
-            "format": "TSV",
-            "size": "2000"
-            }
-
-        response = requests.post(files_endpt, headers = {"Content-Type": "application/json"}, json = params)
+        response = self.generatePOSTrequest("cases", fields)
 
         original_stdout = sys.stdout
 
@@ -366,7 +349,64 @@ class Ui_MainWindow(object):
                 count += 1
 
 
+    def downloadSVS(self):
+        self.btnDownloadFiles.setEnabled(False)
 
+        files_endpt = "files"
+
+        fields = [
+            "file_name",
+            "file_size",
+            "cases.submitter_id"
+        ]
+
+        original_stdout = sys.stdout
+        with open('files.tsv', 'w') as fp:
+            sys.stdout = fp
+            print(self.generatePOSTrequest(files_endpt, fields).content.decode('utf-8'))
+            sys.stdout = original_stdout
+
+        fid_to_subid = []
+
+        count = 0
+        with open('files.tsv') as fp:
+
+            ix_file_id = 0
+            ix_sub_id = 0
+            ix_file_size = 0
+            total_space_required = 0
+
+            while True:
+                count += 1
+
+                line = fp.readline()
+
+                if not line:
+                    break
+
+                lines = line.strip().split("\t")
+
+                if count == 1:
+                    for index in range(len(lines)):
+                        if "submitter_id" in lines[index]:
+                            ix_sub_id = index
+                        if "id" == lines[index]:
+                            ix_file_id = index
+                        if "file_size" in lines[index]:
+                            ix_file_size = index
+                else:
+                    if len(line) != 1:
+                        total_space_required += int(lines[ix_file_size])
+                        fid_to_subid.append({
+                            lines[ix_file_id]: lines[ix_sub_id]
+                        })
+
+        for id, dir in fid_to_subid.items():
+            # mkdir -p ./dir/
+            # gdc-tool id ./dir/
+            # mv ./dir/id/*.svs ./dir/ 
+
+        self.btnDownloadFiles.setEnabled(True)
 
 
 if __name__ == "__main__":

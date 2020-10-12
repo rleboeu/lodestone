@@ -38,3 +38,7 @@ For Windows, it would be simpler to `right click Start -> Apps and Features -> P
 </table>
 
 ## Installation Instructions
+Download the appropriate release (Lodestone zip archive) from https://github.com/rleboeu/lodestone/releases. 
+Once you've extracted the contents, open the folder and navigate to the executable file (.exe on Windows). 
+Double-click the executable.
+That's it!

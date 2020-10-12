@@ -38,4 +38,3 @@ For Windows, it would be simpler to `right click Start -> Apps and Features -> P
 </table>
 
 ## Installation Instructions
-## License

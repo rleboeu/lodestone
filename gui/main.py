@@ -397,15 +397,21 @@ class Ui_MainWindow(object):
                 else:
                     if len(line) != 1:
                         total_space_required += int(lines[ix_file_size])
-                        fid_to_subid.append({
-                            lines[ix_file_id]: lines[ix_sub_id]
-                        })
+                        fid_to_subid.append(
+                            [lines[ix_file_id], lines[ix_sub_id]]
+                        )
 
-        for id, dir in fid_to_subid.items():
-            # mkdir -p ./dir/
-            # gdc-tool id ./dir/
-            # mv ./dir/id/*.svs ./dir/ 
-
+        total_files = len(fid_to_subid)
+        if sys.platform == 'darwin' or sys.platform == 'linux':
+            for arr in fid_to_subid:
+                os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
+                print("File #{} of {}".format(current_file, total_files))
+                os.system('../bin/gdc-client-{} download {} --dir ./Lodestone_Files/{}/'.format(sys.platform, arr[0], arr[1]))
+        elif sys.platform == 'win32':
+            for arr in fid_to_subid:
+                os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
+                print("File #{} of {}".format(current_file, total_files))
+                os.system('..\\bin\\gdc-client-win32 download {} --dir .\\Lodestone_Files\\{}\\'.format(arr[0], arr[1]))
         self.btnDownloadFiles.setEnabled(True)
 
 

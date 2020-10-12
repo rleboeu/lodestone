@@ -406,12 +406,12 @@ class Ui_MainWindow(object):
             for arr in fid_to_subid:
                 os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
                 print("File #{} of {}".format(current_file, total_files))
-                os.system('../bin/gdc-client-{} download {} --dir ./Lodestone_Files/{}/'.format(sys.platform, arr[0], arr[1]))
+                os.system('./bin/gdc-client-{} download {} --dir ./Lodestone_Files/{}/'.format(sys.platform, arr[0], arr[1]))
         elif sys.platform == 'win32':
             for arr in fid_to_subid:
                 os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
                 print("File #{} of {}".format(current_file, total_files))
-                os.system('..\\bin\\gdc-client-win32 download {} --dir .\\Lodestone_Files\\{}\\'.format(arr[0], arr[1]))
+                os.system('.\\bin\\gdc-client-win32.exe download {} --dir .\\Lodestone_Files\\{}\\'.format(arr[0], arr[1]))
         self.btnDownloadFiles.setEnabled(True)
 
 

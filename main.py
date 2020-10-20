@@ -401,17 +401,20 @@ class Ui_MainWindow(object):
                             [lines[ix_file_id], lines[ix_sub_id]]
                         )
 
+        current_file = 1
         total_files = len(fid_to_subid)
         if sys.platform == 'darwin' or sys.platform == 'linux':
             for arr in fid_to_subid:
                 os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
                 print("File #{} of {}".format(current_file, total_files))
                 os.system('./bin/gdc-client-{} download {} --dir ./Lodestone_Files/{}/'.format(sys.platform, arr[0], arr[1]))
+                current_file += 1
         elif sys.platform == 'win32':
             for arr in fid_to_subid:
-                os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
+                os.system('mkdir .\\Lodestone_Files\\{}\\'.format(arr[1]))
                 print("File #{} of {}".format(current_file, total_files))
-                os.system('.\\bin\\gdc-client-win32.exe download {} --dir .\\Lodestone_Files\\{}\\'.format(arr[0], arr[1]))
+                os.system('".\\bin\\gdc-client-win32.exe download {} --dir .\\Lodestone_Files\{}\\"'.format(arr[0], arr[1]))
+                current_file += 1
         self.btnDownloadFiles.setEnabled(True)
 
 

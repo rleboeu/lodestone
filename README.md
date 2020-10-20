@@ -23,17 +23,17 @@ For Windows, it would be simpler to `right click Start -> Apps and Features -> P
          <tr>
            <td>Windows</td>
            <td>Yes</td>
-           <td>Untested</td>
+           <td>Windows 10</td>
          </tr>
           <tr>
            <td>OSX/macOS</td>
            <td>Yes</td>
-           <td>10.15 Catalina</td>
+           <td>Untested</td>
          </tr>
         <tr>
            <td>Linux</td>
            <td>Yes</td>
-           <td>Pop!_OS 20.04 LTS<br />Arch Linux kern. 5.8.5</td>
+           <td>Pop!_OS 20.04 LTS<br />Arch Linux</td>
          </tr>
 </table>
 

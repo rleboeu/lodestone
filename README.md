@@ -38,7 +38,7 @@ Windows does not come with Python out of the box therefore you will have to manu
 </table>
 
 ## Installation Instructions
-Note: Lodestone releases do not include binary executables. The main idea behind releases is to mainstream the process of launching the software as opposed to cloning the repo and running the code from terminal.
-Download the appropriate release (Lodestone zip archive) from https://github.com/rleboeu/lodestone/releases. 
+Note: Lodestone releases do not include binary executables. The main idea behind releases is to mainstream the process of launching the software as opposed to cloning the repo and running the code from terminal.<br/>
+Download the appropriate release (Lodestone zip archive) from https://github.com/rleboeu/lodestone/releases. <br/>
 For Windows users only: Double-click Run.BAT (Windows Batch File). This will spawn a GUI window and a terminal. <br/>
 Do not close the terminal unless you want to cancel the download.

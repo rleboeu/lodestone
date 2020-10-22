@@ -5,7 +5,7 @@ Lodestone is proudly developed on Linux
 
 ## Prerequisites
 ### Software
-&nbsp;&nbsp;<b>Python 3</b> You can download Python <a href="https://www.python.org/downloads/">here</a>.<br />
+&nbsp;&nbsp;<b>Python 3</b> <br/>You can download Python <a href="https://www.python.org/downloads/">here</a>.<br />
 
 &nbsp;&nbsp;You can check which version of Python you have on OSX (Mac) or Linux by typing `python --version` or `python3 --version` into a terminal.
 Windows does not come with Python out of the box therefore you will have to manually install it.<br />

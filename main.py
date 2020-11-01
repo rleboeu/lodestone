@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 
 import requests
 import sys
@@ -124,10 +125,22 @@ class Ui_MainWindow(object):
         self.btnDownloadFiles.setGeometry(QtCore.QRect(20, 490, 191, 41))
         self.btnDownloadFiles.clicked.connect(lambda: self.downloadSVS())
 
+        self.lblOutputDir = QtWidgets.QLabel(self.centralwidget)
+        self.lblOutputDir.setGeometry(QtCore.QRect(220, 550, 500, 41))
+        self.lblOutputDir.setFont(font)
+        self.lblOutputDir.setObjectName("lblOutputDir")
+
+        self.btnDownloadCustom = QtWidgets.QPushButton(self.centralwidget)
+        self.btnDownloadCustom.setEnabled(False)
+        self.btnDownloadCustom.setGeometry(QtCore.QRect(20, 540, 191, 41))
+        self.btnDownloadCustom.clicked.connect(lambda: self.changeDirectory())
+
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btnDownloadFiles.setFont(font)
         self.btnDownloadFiles.setObjectName("btnDownloadFiles")
+        self.btnDownloadCustom.setFont(font)
+        self.btnDownloadCustom.setObjectName("btnDownloadCustom")
         self.chkDownloadSort = QtWidgets.QCheckBox(self.centralwidget)
         self.chkDownloadSort.setEnabled(False)
         self.chkDownloadSort.setGeometry(QtCore.QRect(230, 490, 191, 31))
@@ -181,6 +194,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Lodestone"))
         self.btnGenerateSheet.setText(_translate("MainWindow", "Search..."))
+        self.btnDownloadCustom.setText(_translate("MainWindow", "Change Directory..."))
+        self.lblOutputDir.setText(_translate("MainWindow", os.getcwd()))
         self.cmbDemoRace.setItemText(0, _translate("MainWindow", "white"))
         self.cmbDemoRace.setItemText(1, _translate("MainWindow", "black or african american"))
         self.lblTitle.setText(_translate("MainWindow", "Welcome to Lodestone (Alpha)"))
@@ -201,7 +216,7 @@ class Ui_MainWindow(object):
         self.cmbDiagnosesPathStage.setItemText(2, _translate("MainWindow", "stage iia"))
         self.cmbDiagnosesPathStage.setItemText(3, _translate("MainWindow", "stage iib"))
         self.cmbDiagnosesPathStage.setItemText(4, _translate("MainWindow", "stage iiia"))
-        self.btnDownloadFiles.setText(_translate("MainWindow", "Download SVS Files"))
+        self.btnDownloadFiles.setText(_translate("MainWindow", "Download..."))
         self.chkDownloadSort.setText(_translate("MainWindow", "Sort Images by Case ID"))
         self.lblProjectPrimarySite.setText(_translate("MainWindow", "Primary Site:"))
         self.cmbProjectPrimarySite.setItemText(0, _translate("MainWindow", "breast"))
@@ -330,6 +345,7 @@ class Ui_MainWindow(object):
                 sys.stdout = original_stdout
         self.btnGenerateSheet.setEnabled(True)
         self.btnDownloadFiles.setEnabled(True)
+        self.btnDownloadCustom.setEnabled(True)
 
         # update the model and therefore QTableView
         count = 0
@@ -351,6 +367,7 @@ class Ui_MainWindow(object):
 
     def downloadSVS(self):
         self.btnDownloadFiles.setEnabled(False)
+        self.btnDownloadCustom.setEnabled(False)
 
         files_endpt = "files"
 
@@ -403,19 +420,30 @@ class Ui_MainWindow(object):
 
         current_file = 1
         total_files = len(fid_to_subid)
+        to_filepath = self.lblOutputDir.text()
         if sys.platform == 'darwin' or sys.platform == 'linux':
             for arr in fid_to_subid:
-                os.system('mkdir -p ./Lodestone_Files/{}/'.format(arr[1]))
+                os.system('mkdir -p {}/{}/'.format(to_filepath, arr[1]))
                 print("File #{} of {}".format(current_file, total_files))
-                os.system('./bin/gdc-client-{} download {} --dir ./Lodestone_Files/{}/'.format(sys.platform, arr[0], arr[1]))
+                os.system('./bin/gdc-client-{} download {} --dir {}/{}/'.format(sys.platform, to_filepath, arr[0], arr[1]))
                 current_file += 1
         elif sys.platform == 'win32':
+            # translate filepath to windows format
+            temp = to_filepath.split('/')
+            outpath = '\\'.join(temp)
+
             for arr in fid_to_subid:
-                os.system('mkdir .\\Lodestone_Files\\{}\\'.format(arr[1]))
+                os.system('mkdir {}\\{}\\'.format(outpath, arr[1]))
                 print("File #{} of {}".format(current_file, total_files))
-                os.system('".\\bin\\gdc-client-win32.exe download {} --dir .\\Lodestone_Files\{}\\"'.format(arr[0], arr[1]))
+                os.system('".\\bin\\gdc-client-win32.exe download {} --dir {}\\{}\\"'.format(arr[0], outpath, arr[1]))
                 current_file += 1
         self.btnDownloadFiles.setEnabled(True)
+        self.btnDownloadCustom.setEnabled(True)
+
+
+    def changeDirectory(self):
+        filepath = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Directory"))
+        self.lblOutputDir.setText(filepath)
 
 
 if __name__ == "__main__":

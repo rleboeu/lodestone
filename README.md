@@ -1,19 +1,19 @@
 # Lodestone
-Note: This GitHub page is currently a work-in-progress and contains missing sections.<br />
-The code organization is messy and will be fixed in the near future.
-## About Lodestone
+Lodestone is proudly developed on Linux
+## About
 &nbsp;&nbsp;Lodestone was designed with the goal to be an alternative for downloading large amounts of files from the National Cancer Institute's Genomic Data Commons Data Portal (GDC Portal), making it more efficient for researchers to download items en masse without having to use the GDC Portal's repository (e.g. SVS files: see <a href="https://www.leicabiosystems.com/digital-pathology/manage/aperio-imagescope/">Aperio ImageScope</a>). Through Lodestone, you will be able to directly modify your search criteria (AJCC Pathologic Stage, Gender, Race, File Extension), create corresponding .TSVs, and download any related files that you would want. In order to accomplish this, Lodestone utilizes the <a href="https://gdc.cancer.gov/access-data/gdc-data-transfer-tool">GDC Data Transfer Tool</a> along with Python source code. The GDC Data Transfer Tool allows for efficient download speeds, whereas Python allows for a streamlined and easy-to-modify codebase.<br /><br />
-&nbsp;&nbsp;Lodestone is developed on Linux (Pop!\_OS and Arch), therefore Linux support will always be available.
 
 ## Prerequisites
-&nbsp;&nbsp;<b>python2.7 or higher</b> (<a href="https://www.python.org/downloads/">python3 recommended</a>).<br />
+### Software
+&nbsp;&nbsp;<b>Python 3</b> <br/>You can download Python <a href="https://www.python.org/downloads/">here</a>.<br />
 
-&nbsp;&nbsp;You can check which version of python you have on OSX (Mac) or Linux by typing `python --version` or `python3 --version` into a terminal.
-For Windows, it would be simpler to `right click Start -> Apps and Features -> Programs and Features` and search for the python entry.<br />
+&nbsp;&nbsp;You can check which version of Python you have on OSX (Mac) or Linux by typing `python --version` or `python3 --version` into a terminal.
+Windows does not come with Python out of the box therefore you will have to manually install it.<br />
 
-&nbsp;&nbsp;It is worth noting that many files in the GDC Portal's repository are quite large. Quality internet connection and bandwidth are recommended. Furthermore, Lodestone is a relatively hefty program, therefore performance on older systems may be inconsistent or nonexistent.
+### Hardware
+&nbsp;&nbsp;It is worth noting that many files in the GDC Portal's repository are quite large. Quality internet connection and bandwidth are recommended. Furthermore, Lodestone is a relatively hefty program and performance on older systems may be inconsistent if not nonexistent.
 
-### Officially Supported Operating Systems
+## Platform Support
 <table border = "0">
           <tr>
             <th>OS</th>
@@ -26,7 +26,7 @@ For Windows, it would be simpler to `right click Start -> Apps and Features -> P
            <td>Windows 10</td>
          </tr>
           <tr>
-           <td>OSX/macOS</td>
+           <td>macOS</td>
            <td>Yes</td>
            <td>Untested</td>
          </tr>
@@ -38,7 +38,7 @@ For Windows, it would be simpler to `right click Start -> Apps and Features -> P
 </table>
 
 ## Installation Instructions
-Download the appropriate release (Lodestone zip archive) from https://github.com/rleboeu/lodestone/releases. 
-Once you've extracted the contents, open the folder and navigate to the executable file (.exe on Windows). 
-Double-click the executable.
-That's it!
+Note: Lodestone releases do not include binary executables. The main idea behind releases is to mainstream the process of launching the software as opposed to cloning the repo and running the code from terminal.<br/>
+Download the appropriate release (Lodestone zip archive) from https://github.com/rleboeu/lodestone/releases. <br/>
+For Windows users only: Double-click Run.BAT (Windows Batch File). This will spawn a GUI window and a terminal. <br/>
+Do not close the terminal unless you want to cancel the download.
